@@ -3,7 +3,7 @@
 # 명령 에러 발생 시 종료
 set -e
 
-PROJECT_ROOT="/home/ubuntu/zupzup"
+PROJECT_ROOT="/home/ubuntu/zupzup/deploy"
 APP_NAME="zupzup"
 
 APP_LOG="$PROJECT_ROOT/logs/application.log"
