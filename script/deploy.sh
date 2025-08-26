@@ -4,7 +4,7 @@
 set -e
 
 PROJECT_ROOT="/home/ubuntu/zupzup/deploy"
-APP_NAME="zupzup"
+APP_NAME="sejong-zupzup"
 
 APP_LOG="/home/ubuntu/zupzup/logs/application.log"
 APP_ERROR_LOG="/home/ubuntu/zupzup/logs/jvm_error.log"
@@ -28,7 +28,7 @@ cd $PROJECT_ROOT
 JAR_FILE=$PROJECT_ROOT/build/libs/*.jar
 
 # 2. 실행 중인 애플리케이션의 PID
-CURRENT_PID=$(pgrep -f "java.*$APP_NAME" || true)
+CURRENT_PID=$(pgrep -f "$APP_NAME" || true)
 
 # 3. 실행 중인 애플리케이션이 있으면 종료
 echo "> 실행 중인 애플리케이션이 있다면 종료" >> $DEPLOY_LOG
