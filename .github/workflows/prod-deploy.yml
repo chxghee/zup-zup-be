@@ -79,7 +79,7 @@ jobs:
             
             chmod +x /home/ubuntu/zupzup/deploy/script/deploy.sh
             
-            /home/ubuntu/deploy/zupzup/deploy/script/deploy.sh
+            /home/ubuntu/zupzup/deploy/script/deploy.sh
             
 
 
