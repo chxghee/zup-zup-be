@@ -6,9 +6,9 @@ set -e
 PROJECT_ROOT="/home/ubuntu/zupzup/deploy"
 APP_NAME="zupzup"
 
-APP_LOG="$PROJECT_ROOT/logs/application.log"
-APP_ERROR_LOG="$PROJECT_ROOT/logs/jvm_error.log"
-DEPLOY_LOG="$PROJECT_ROOT/logs/deploy.log"
+APP_LOG="/home/ubuntu/zupzup/logs/application.log"
+APP_ERROR_LOG="/home/ubuntu/zupzup/logs/jvm_error.log"
+DEPLOY_LOG="/home/ubuntu/zupzup/logs/deploy.log"
 
 # 배포 중 에러 발생으로 중단 시 로그 기록 함수
 on_error() {
