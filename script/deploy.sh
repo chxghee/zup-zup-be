@@ -27,34 +27,18 @@ cd $PROJECT_ROOT
 # 1. jar 파일 시간 순 정렬 후 가장 상단에 있는(가장 최신) plain 이 아닌 jar 파일을 선택
 JAR_FILE=$PROJECT_ROOT/build/libs/*.jar
 
-# 2. 실행 중인 애플리케이션의 PID
-CURRENT_PID=$(pgrep -f "$APP_NAME" || true)
 
-# 3. 실행 중인 애플리케이션이 있으면 종료
-echo "> 실행 중인 애플리케이션이 있다면 종료" >> $DEPLOY_LOG
-if [ -z "$CURRENT_PID" ]; then
-  echo "  -> 현재 실행 중인 애플리케이션이 없습니다." >> $DEPLOY_LOG
+# 2. 실행 중인 애플리케이션이 있으면 종료
+if pgrep -f "$APP_NAME" > /dev/null; then
+  echo "  -> 실행 중인 애플리케이션에 종료 신호 전송" >> $DEPLOY_LOG
+  pkill -15 -f "$APP_NAME"
+  sleep 5 # 종료될 시간을 5초간 '믿고' 기다립니다.
 else
-  echo "  -> 실행 중인 애플리케이션 종료 (PID: $CURRENT_PID)" >> $DEPLOY_LOG
-  kill -15 $CURRENT_PID
-
-  for _ in {1..10}
-  do
-    if ! ps -p $CURRENT_PID > /dev/null 2>&1; then
-      echo "   → 종료 완료" >> $DEPLOY_LOG
-      break
-    fi
-    sleep 1
-  done
-
-  if ps -p $CURRENT_PID > /dev/null 2>&1; then
-    echo "   → 정상 종료 실패, 강제 종료 시도." >> $DEPLOY_LOG
-    kill -9 $CURRENT_PID
-    sleep 2
-  fi
+  echo "  -> 현재 실행 중인 애플리케이션이 없습니다." >> $DEPLOY_LOG
 fi
 
-# 4. 새 애플리케이션 백그라운드 실행
+
+# 3. 새 애플리케이션 백그라운드 실행
 echo "> 새 애플리케이션 실행" >> $DEPLOY_LOG
 nohup java \
     -Dspring.profiles.active=prod \
@@ -73,7 +57,7 @@ nohup java \
 
 
 
-# 5. 애플리케이션 실행 여부 체크
+# 4. 애플리케이션 실행 여부 체크
 NEW_PID=$(pgrep -f "$APP_NAME")
 if [ -n "$NEW_PID" ]; then
   echo "  -> 애플리케이션 실행 성공 (PID: $NEW_PID)" >> $DEPLOY_LOG
